@@ -14,8 +14,9 @@ class AddRoadDialog : public QDialog
 public:
     explicit AddRoadDialog(QWidget *parent = nullptr);
     ~AddRoadDialog();
-    double getValue();
-    bool getIsBidirectional();
+
+    double length = 1.0;
+    bool is_bidirectional = false;
 
 private slots:
     void on_pushButton_ok_clicked();
@@ -23,6 +24,4 @@ private slots:
 
 private:
     Ui::AddRoadDialog *ui;
-    double value = 1.0;
-    bool isBidirectional = false;
 };

@@ -73,10 +73,7 @@
                                    </font>
                               </property>
                               <property name="styleSheet">
-                                   <string notr="true">QGraphicsView {
-	border: 2px solid black;
-     border-radius: 5px;
-}</string>
+                                   <string notr="true"/>
                               </property>
                          </widget>
                     </item>

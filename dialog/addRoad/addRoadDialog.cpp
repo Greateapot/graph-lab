@@ -15,16 +15,6 @@ AddRoadDialog::~AddRoadDialog()
     delete ui;
 }
 
-double AddRoadDialog::getValue()
-{
-    return value;
-}
-
-bool AddRoadDialog::getIsBidirectional()
-{
-    return isBidirectional;
-}
-
 void AddRoadDialog::on_pushButton_cancel_clicked()
 {
     close();
@@ -32,7 +22,7 @@ void AddRoadDialog::on_pushButton_cancel_clicked()
 
 void AddRoadDialog::on_pushButton_ok_clicked()
 {
-    this->value = ui->doubleSpinBox->value();
-    this->isBidirectional = ui->checkBox->isChecked();
-    this->close();
+    length = ui->doubleSpinBox->value();
+    is_bidirectional = ui->checkBox->isChecked();
+    close();
 }

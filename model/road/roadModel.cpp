@@ -3,46 +3,39 @@
 #define _USE_MATH_DEFINES
 
 #include "model/city/cityModel.h"
+#include "utils/utils.h"
 
 #include <cmath>
 
-RoadModel::RoadModel(CityModel *A, CityModel *B, double length, QGraphicsItem *parent) : QGraphicsItem(parent), A(A), B(B), length(length)
+RoadModel::RoadModel(
+    CityModel *A, CityModel *B,
+    double length, QGraphicsItem *parent)
+    : QGraphicsItem(parent), A(A), B(B), length(length)
 {
-    setFlag(QGraphicsItem::ItemIsFocusable);
+    update();
 }
 
 RoadModel::RoadModel(const RoadModel &r)
+    : QGraphicsItem(r.parentItem()),
+      A(r.A), B(r.B), length(r.length)
 {
-    A = r.A;
-    A = r.B;
-    length = r.length;
-    setFlag(QGraphicsItem::ItemIsFocusable);
+    update();
 }
 
-QString RoadModel::double_to_str(double in)
+void RoadModel::update()
 {
-    QString result = QString::fromStdString(std::to_string(in));
-    double intpart;
-    while (result.back() == '0')
-    {
-        result.remove(result.length() - 1, 1);
-    }
-    if (modf(in, &intpart) == 0.0)
-    {
-        result.remove(result.length() - 1, 1);
-    }
-    return result;
+    setFlag(QGraphicsItem::ItemIsFocusable);
 }
 
 void RoadModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     painter->setRenderHints(QPainter::Antialiasing);
-    painter->setPen(isSelected ? Qt::cyan : Qt::blue);
+    painter->setPen(is_selected ? Qt::cyan : Qt::blue);
 
-    qreal Ax = A->pos().x() + CityModel::radius,
-          Ay = A->pos().y() + CityModel::radius,
-          Bx = B->pos().x() + CityModel::radius,
-          By = B->pos().y() + CityModel::radius,
+    qreal Ax = A->pos().x() + A->radius,
+          Ay = A->pos().y() + A->radius,
+          Bx = B->pos().x() + B->radius,
+          By = B->pos().y() + B->radius,
           angle = -atan(abs(By - Ay) / abs(Bx - Ax));
 
     // Адское сокращение if'ов
@@ -52,8 +45,9 @@ void RoadModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 
     qreal del_x = 15 * sin(angle),
           del_y = 15 * cos(angle);
-    QLineF line = QLineF(Ax - del_x, Ay - del_y, Bx - del_x, By - del_y),
-           vector = line.unitVector();
+
+    QLineF line = QLineF(Ax - del_x, Ay - del_y, Bx - del_x, By - del_y);
+    QLineF vector = line.unitVector();
     vector.setLength(20);
 
     QPointF point1 = vector.p2();
@@ -77,7 +71,7 @@ void RoadModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
     qreal rotate_angle = -line.angle();
     QPointF center = line.center();
 
-    QString text = double_to_str(length);
+    QString text = double2QString(length);
     int tw = fm.width(text);
     int th = fm.height();
 

@@ -14,13 +14,14 @@ public:
 
     CityModel *A, *B;
     double length;
-    bool isSelected = false;
+    bool is_selected = false;
 
     friend bool operator==(const RoadModel &, const RoadModel &);
+
+private:
+    void update();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     QRectF boundingRect() const override;
-    QString double_to_str(double);
 };
-

@@ -15,11 +15,6 @@ InputDataDialog::~InputDataDialog()
     delete ui;
 }
 
-std::pair<QString, int> InputDataDialog::getValue()
-{
-    return value;
-}
-
 void InputDataDialog::on_pushButton_cancel_clicked()
 {
     close();
@@ -27,7 +22,7 @@ void InputDataDialog::on_pushButton_cancel_clicked()
 
 void InputDataDialog::on_pushButton_ok_clicked()
 {
-    this->value.first = ui->lineEdit->text();
-    this->value.second = ui->comboBox->currentIndex();
-    this->close();
+    city_name = ui->lineEdit->text();
+    solution_method = ui->comboBox->currentIndex();
+    close();
 }

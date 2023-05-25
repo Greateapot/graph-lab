@@ -15,7 +15,8 @@ public:
     explicit InputDataDialog(QWidget *parent = nullptr);
     ~InputDataDialog();
 
-    std::pair<QString, int> getValue();
+    QString city_name;
+    int solution_method;
 
 private slots:
     void on_pushButton_ok_clicked();
@@ -23,5 +24,4 @@ private slots:
 
 private:
     Ui::InputDataDialog *ui;
-    std::pair<QString, int> value;
 };

@@ -15,7 +15,7 @@ public:
     explicit AddCityDialog(QWidget *parent = nullptr);
     ~AddCityDialog();
 
-    QString getValue();
+    QString city_name;
 
 private slots:
     void on_pushButton_ok_clicked();
@@ -23,5 +23,4 @@ private slots:
 
 private:
     Ui::AddCityDialog *ui;
-    QString value;
 };

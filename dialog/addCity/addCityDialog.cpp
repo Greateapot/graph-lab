@@ -15,11 +15,6 @@ AddCityDialog::~AddCityDialog()
     delete ui;
 }
 
-QString AddCityDialog::getValue()
-{
-    return value;
-}
-
 void AddCityDialog::on_pushButton_cancel_clicked()
 {
     close();
@@ -27,6 +22,6 @@ void AddCityDialog::on_pushButton_cancel_clicked()
 
 void AddCityDialog::on_pushButton_ok_clicked()
 {
-    this->value = ui->lineEdit->text();
-    this->close();
+    city_name = ui->lineEdit->text();
+    close();
 }

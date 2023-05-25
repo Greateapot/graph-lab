@@ -9,7 +9,7 @@
 
 #include "model/city/cityModel.h"
 #include "model/road/roadModel.h"
-#include "utils/scene/scene.h"
+#include "widget/scene/scene.h"
 
 namespace Ui
 {
@@ -26,19 +26,31 @@ public:
 
 private slots:
     void addCity();
-    void start_addRoad();
-    void continue_addRoad(CityModel *);
-    void addRoad(RoadModel *);
-    void select(QGraphicsItem *);
+    void addRoad();
+    void _addRoad(CityModel *);
+
     void unselectAll();
+    void select(QGraphicsItem *);
+
+    void unvisitAll();
+    void visit(CityModel *);
+
     void save_to_file();
     void open_file();
+
     void showSolution();
-    void solveDepth(std::size_t);
-    void cb(std::string, std::size_t);
+
+    void solve_depth(size_t);
+
+    void _solve_depth(
+        CityModel *city,
+        QString message,
+        size_t road_length);
+
+    void solve_width(size_t);
 
 protected:
-    void keyPressEvent(QKeyEvent *e);
+    void keyPressEvent(QKeyEvent *);
 
 private:
     Ui::MainWindow *ui;
@@ -47,5 +59,7 @@ private:
     std::vector<CityModel *> cities;
     std::vector<RoadModel *> roads;
 
-    CityModel *addRoadFirstCity = nullptr;
+    CityModel *add_road_first_city = nullptr;
+
+    bool solving = false;
 };
