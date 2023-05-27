@@ -22,6 +22,6 @@ private:
     void update();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *widget = nullptr) override;
     QRectF boundingRect() const override;
 };

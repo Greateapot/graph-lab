@@ -1,24 +1,21 @@
 #include "cityModel.h"
 
+#include "utils/utils.h"
+
 CityModel::CityModel(QGraphicsItem *parent)
     : QGraphicsItem(parent), name("CityModel")
 {
     update();
 }
 
-CityModel::CityModel(
-    QString name, double x, double y,
-    double radius, QGraphicsItem *parent)
-    : QGraphicsItem(parent),
-      name(name), pos_x(x),
-      pos_y(y), radius(radius)
+CityModel::CityModel(QString name, double radius, QGraphicsItem *parent)
+    : QGraphicsItem(parent), name(name), radius(radius)
 {
     update();
 }
 
 CityModel::CityModel(const CityModel &c)
-    : QGraphicsItem(c.parentItem()), name(c.name),
-      pos_x(c.pos_x), pos_y(c.pos_y), radius(c.radius)
+    : QGraphicsItem(c.parentItem()), name(c.name), radius(c.radius)
 {
     update();
 }
@@ -42,35 +39,48 @@ void CityModel::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidg
 
     painter->drawEllipse(boundingRect());
 
-    QFontMetrics fm(painter->font());
-    const int tw = fm.width(name),
-              th = fm.height();
-    painter->drawText(radius - tw / 2, radius + th / 2, name);
+    { // name
+        QFontMetrics fm(painter->font());
+        const int tw = fm.width(name),
+                  th = fm.height();
+        painter->drawText(radius - tw / 2, radius - th / 4, name);
+    }
+
+    if (mark_DXTR < INF)
+    { // DXTR
+        QFontMetrics fm(painter->font());
+        QString v = double2QString(mark_DXTR);
+        const int tw = fm.width(v),
+                  th = fm.height();
+        painter->drawText(radius - tw / 2, radius + th, v);
+    }
 }
 QRectF CityModel::boundingRect() const
 {
-    return QRectF(pos_x, pos_y, radius * 2, radius * 2);
+    return QRectF(0, 0, radius * 2, radius * 2);
 }
 
-// TODO: RW
-std::fstream &operator<<(std::fstream &fout, const CityModel &c)
+std::fstream &operator<<(std::fstream &fout, const CityModel &city)
 {
-    fout << '\n'
-         << c.name.toStdString() << '\n'
-         << c.pos().x() << '\n'
-         << c.pos().y() << '\n';
+    fout << city.name.toStdString() << DLTR
+         << city.pos().x() << DLTR
+         << city.pos().y() << DLTR
+         << city.radius << DLTR;
     return fout;
 }
 
-// TODO: RW
-std::fstream &operator>>(std::fstream &fin, CityModel &c)
+std::fstream &operator>>(std::fstream &fin, CityModel &city)
 {
-    std::string name;
-    fin >> name;
-    c.name = QString::fromStdString(name);
-    int x, y;
-    fin >> x;
-    fin >> y;
-    c.moveBy(x, y);
+    std::string name_raw, x_raw, y_raw, radius_raw;
+    std::getline(fin, name_raw, DLTR);
+    std::getline(fin, x_raw, DLTR);
+    std::getline(fin, y_raw, DLTR);
+    std::getline(fin, radius_raw, DLTR);
+
+    // TODO: asserts
+    city.name = QString::fromStdString(name_raw);
+    city.moveBy(stod(x_raw), stod(y_raw));
+    city.radius = stod(radius_raw);
+
     return fin;
 }

@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(scene, &Scene::city_chosen, this, &MainWindow::_addRoad);
     connect(scene, &Scene::item_selected, this, &MainWindow::select);
 
-    connect(ui->actionsave, &QAction::triggered, this, &MainWindow::save_to_file);
-    connect(ui->actionload, &QAction::triggered, this, &MainWindow::open_file);
+    connect(ui->actionsave, &QAction::triggered, this, &MainWindow::save);
+    connect(ui->actionload, &QAction::triggered, this, &MainWindow::load);
 }
 
 MainWindow::~MainWindow()

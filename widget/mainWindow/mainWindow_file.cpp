@@ -3,74 +3,92 @@
 
 #include <QFileDialog>
 
-// TODO: RW
-void MainWindow::save_to_file()
+void MainWindow::save()
 {
     QString fileName = QFileDialog::getSaveFileName(
         this,
-        tr("Save graph"), "",
+        tr("Save"), "",
         tr("Text Files (*.txt)"));
+
     if (fileName.isEmpty())
-        return;
-    std::fstream file(fileName.toStdString(), std::ios::out);
+        return; // TODO: message
+
+    std::fstream file(fileName.toStdString(), std::ios::out | std::ios::binary);
     if (!file)
-        return;
+        return; // TODO: message
 
-    file << cities.size();
-    for (auto i : cities)
-        file << *i;
+    for (auto city : cities)
+        file << *city;
 
-    for (auto i : roads)
-        file << i->length << '\n'
-             << i->A->name.toStdString() << '\n'
-             << i->B->name.toStdString() << '\n';
+    file << GDLTR;
+
+    for (auto road : roads)
+        file << road->length << DLTR
+             << road->A->name.toStdString() << DLTR
+             << road->B->name.toStdString() << DLTR;
+
+    file << GDLTR;
 
     file.close();
 }
 
-// TODO: RW
-void MainWindow::open_file()
+void MainWindow::load()
 {
     roads.clear();
     cities.clear();
+
     QString fileName = QFileDialog::getOpenFileName(
         this,
-        tr("Open Address Book"), "",
-        tr("Text Files (*.txt);;All Files (*)"));
+        tr("Load"), "",
+        tr("Text Files (*.txt)"));
+
     if (fileName.isEmpty())
-        return;
-    std::fstream file(fileName.toStdString(), std::ios::in);
+        return; // TODO: message
+
+    std::fstream file(fileName.toStdString(), std::ios::in | std::ios::binary);
     if (!file)
-    {
-        return;
-    }
-    int n;
-    file >> n;
-    for (int i = 0; i < n; ++i)
+        return; // TODO: message
+
+    while (file.peek() != GDLTR)
     {
         CityModel *new_city = new CityModel();
         file >> *new_city;
         cities.push_back(new_city);
         scene->addItem(new_city);
     }
-    while (file)
-    {
-        double l;
-        std::string name;
-        CityModel *first_city, *second_city;
-        file >> l >> name;
-        for (auto i : cities)
-            if (i->name.toStdString() == name)
-                first_city = i;
-        file >> name;
-        for (auto i : cities)
-            if (i->name.toStdString() == name)
-                second_city = i;
+    file.get(); // skip GDLTR
 
-        RoadModel *new_road = new RoadModel(first_city, second_city, l);
+    while (file.peek() != GDLTR)
+    {
+        std::string name_raw, length_raw;
+        double length;
+        CityModel *A, *B;
+
+        getline(file, length_raw, DLTR);
+        length = stod(length_raw);
+
+        getline(file, name_raw, DLTR);
+        for (auto city : cities)
+            if (city->name.toStdString() == name_raw)
+            {
+                A = city;
+                break;
+            }
+
+        getline(file, name_raw, DLTR);
+        for (auto city : cities)
+            if (city->name.toStdString() == name_raw)
+            {
+                B = city;
+                break;
+            }
+
+        RoadModel *new_road = new RoadModel(A, B, length);
         roads.push_back(new_road);
         scene->addItem(new_road);
     }
+    file.get(); // skip GDLTR
+
     scene->update();
     file.close();
 }

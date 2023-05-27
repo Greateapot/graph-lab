@@ -11,6 +11,8 @@
 #include "model/road/roadModel.h"
 #include "widget/scene/scene.h"
 
+const char GDLTR = '\1';
+
 namespace Ui
 {
     class MainWindow;
@@ -35,19 +37,25 @@ private slots:
     void unvisitAll();
     void visit(CityModel *);
 
-    void save_to_file();
-    void open_file();
+    void save();
+    void load();
+
+    void build_matrix(std::vector<std::vector<double>> &);
+    void reduce_matrix(std::vector<std::vector<double>> &);
+
+    void step(std::vector<std::pair<int, int>> &, std::vector<std::vector<double>> &);
 
     void showSolution();
 
-    void solve_depth(size_t);
-
-    void _solve_depth(
-        CityModel *city,
-        QString message,
-        size_t road_length);
-
     void solve_width(size_t);
+
+    void solve_depth(size_t);
+    void _solve_depth(CityModel *, QString, size_t);
+
+    void solve_DXTR(size_t);
+    void _solve_DXTR(CityModel *);
+
+    void solve_TSP(size_t);
 
 protected:
     void keyPressEvent(QKeyEvent *);

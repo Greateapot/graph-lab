@@ -7,23 +7,26 @@
 #include <QGraphicsItem>
 #include <QPainter>
 
+const double INF = 10E10;
+const char DLTR = '\0';
+
 class CityModel : public QGraphicsItem
 {
 public:
     CityModel(QGraphicsItem *parent = nullptr);
-    CityModel(QString, double x = 0, double y = 0, double radius = 25, QGraphicsItem *parent = nullptr);
+    CityModel(QString, double radius = 25, QGraphicsItem *parent = nullptr);
     CityModel(const CityModel &);
 
     friend bool operator==(const CityModel &, const CityModel &);
-    friend std::fstream &operator>>(std::fstream &fin, CityModel &p);
-    friend std::fstream &operator<<(std::fstream &fout, const CityModel &p);
+    friend std::fstream &operator>>(std::fstream &, CityModel &);
+    friend std::fstream &operator<<(std::fstream &, const CityModel &);
 
-    double pos_x = 0;
-    double pos_y = 0;
     double radius = 25;
 
     QString name;
-    std::size_t mark_DXTR = 10E10; // 100 млрд по умолчанию
+
+    size_t index_TSP = INF; // это поле используется один раз, можно обойтись и без него, но так проще ;)
+    double mark_DXTR = INF;
     bool is_selected = 0;
     bool is_visited = 0;
 
@@ -31,6 +34,6 @@ private:
     void update();
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *widget = nullptr) override;
     QRectF boundingRect() const override;
 };

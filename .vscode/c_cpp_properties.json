@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Qt/Qt5.12.12/5.12.12/mingw73_64/include/**"
+                "C:/Qt/Qt5.12.12/5.12.12/mingw73_64/include/**",
+                "${workspaceFolder}/build/TSP_autogen/include/**"
             ],
             "defines": [
                 "_DEBUG",
