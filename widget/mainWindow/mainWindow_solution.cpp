@@ -8,17 +8,17 @@
 #include <QMessageBox>
 
 #include "utils/utils.h"
-
-// dialogs
-#include "dialog/solutionInput/solutionInputDialog.h"   // TODO: RN class
-#include "dialog/solutionOutput/solutionOutputDialog.h" // TODO: RN class
+#include "dialog/solutionInput/solutionInputDialog.h"
 
 void MainWindow::showSolution()
 {
-    InputDataDialog inputDialog(this);
-    inputDialog.exec();
+    SolutionInputDialog dialog(this);
+    dialog.exec();
 
-    QString city_name = inputDialog.city_name;
+    if (dialog.cancel)
+        return;
+
+    QString city_name = dialog.city_name;
     int index = -1;
 
     for (int i = 0; index < 0 && i < cities.size(); i++)
@@ -33,7 +33,7 @@ void MainWindow::showSolution()
     else
     {
         solving = 1;
-        switch (inputDialog.solution_method)
+        switch (dialog.solution_method)
         {
         case 0:
             // в глубину
@@ -52,7 +52,6 @@ void MainWindow::showSolution()
             solve_TSP(index);
             break;
         }
-        ui->statusbar->clearMessage();
         solving = 0;
     }
 }
@@ -252,7 +251,9 @@ void MainWindow::solve_TSP(size_t index)
     }
 
     if (steps.back().first == steps.back().second) // Если что-то пойдет не так, последний ход всегда == pair(0,0)
-        return ui->statusbar->showMessage("Невозможно решить");
+        return ui->statusbar->showMessage("Невозможно решить", STATUS_MESSAGE_DELAY);
+
+    std::string message = std::to_string(index);
 
     visit(cities[index]);
 
@@ -261,8 +262,11 @@ void MainWindow::solve_TSP(size_t index)
             if (steps[j].first == index)
             {
                 index = steps[j].second;
+                message += " -> " + std::to_string(index);
                 visit(cities[index]);
                 delay(1000);
                 break;
             }
+
+    ui->statusbar->showMessage(QString::fromStdString(message), STATUS_MESSAGE_DELAY);
 }

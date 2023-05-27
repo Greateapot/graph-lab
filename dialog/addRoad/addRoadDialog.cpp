@@ -17,6 +17,7 @@ AddRoadDialog::~AddRoadDialog()
 
 void AddRoadDialog::on_pushButton_cancel_clicked()
 {
+    cancel = true;
     close();
 }
 

@@ -17,6 +17,7 @@ AddCityDialog::~AddCityDialog()
 
 void AddCityDialog::on_pushButton_cancel_clicked()
 {
+    cancel = true;
     close();
 }
 

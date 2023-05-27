@@ -4,24 +4,25 @@
 
 namespace Ui
 {
-    class InputDataDialog;
+    class SolutionInputDialog;
 }
 
-class InputDataDialog : public QDialog
+class SolutionInputDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit InputDataDialog(QWidget *parent = nullptr);
-    ~InputDataDialog();
+    explicit SolutionInputDialog(QWidget *parent = nullptr);
+    ~SolutionInputDialog();
 
     QString city_name;
     int solution_method;
+    bool cancel = false;
 
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
 
 private:
-    Ui::InputDataDialog *ui;
+    Ui::SolutionInputDialog *ui;
 };

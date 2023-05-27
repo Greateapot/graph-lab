@@ -12,7 +12,7 @@
 #include "widget/scene/scene.h"
 
 const char GDLTR = '\1';
-
+const int STATUS_MESSAGE_DELAY = 5000;
 namespace Ui
 {
     class MainWindow;

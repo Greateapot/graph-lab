@@ -34,7 +34,7 @@ void MainWindow::unvisitAll()
 
 void MainWindow::visit(CityModel *city)
 {
-    ui->statusbar->showMessage("City " + city->name + " visited!");
+    ui->statusbar->showMessage("City " + city->name + " visited!", STATUS_MESSAGE_DELAY);
     for (CityModel *c : cities)
         if (c == city)
         {

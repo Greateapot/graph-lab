@@ -16,6 +16,7 @@ public:
     ~AddCityDialog();
 
     QString city_name;
+    bool cancel = false;
 
 private slots:
     void on_pushButton_ok_clicked();

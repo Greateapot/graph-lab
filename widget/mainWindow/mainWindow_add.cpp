@@ -8,16 +8,19 @@ void MainWindow::addCity()
 {
     AddCityDialog dialog(this);
     dialog.exec();
+    if (dialog.cancel)
+        return;
+
     QString city_name = dialog.city_name;
     if (city_name.isEmpty())
-        return; // TODO: message
+        return ui->statusbar->showMessage("Нельзя добавить город с пустым названием!", STATUS_MESSAGE_DELAY);
 
     CityModel *new_city = new CityModel(city_name);
     for (auto i : cities)
         if (*new_city == *i)
         {
             delete new_city;
-            ui->statusbar->showMessage("Этот город уже построен, строй другой.");
+            ui->statusbar->showMessage("Этот город уже построен, строй другой.", STATUS_MESSAGE_DELAY);
             return;
         }
 
@@ -37,27 +40,29 @@ void MainWindow::_addRoad(CityModel *city)
     {
         // Начало создания дороги, нет ни первого города, ни выбранного
         scene->choosing_cities = true;
-        ui->statusbar->showMessage("Выберите первый город (тык по нему).");
+        ui->statusbar->showMessage("Выберите первый город (тык по нему).", STATUS_MESSAGE_DELAY);
     }
     else if (add_road_first_city == nullptr)
     {
         // Если мы здесь, значит первый город еще не выбран, зато есть выбранный город, его и назначем первым
         add_road_first_city = city;
-        ui->statusbar->showMessage("Выберите второй город (тоже тык).");
+        ui->statusbar->showMessage("Выберите второй город (тоже тык).", STATUS_MESSAGE_DELAY);
     }
     else if (city == add_road_first_city)
     {
         // Если мы здесь, значит первый город уже выбран, а так же есть выбранный город, но это тот же город, что и первый. Шлём пользователя выбирать другой.
-        ui->statusbar->showMessage("Выберите другой город!");
+        ui->statusbar->showMessage("Выберите другой город!", STATUS_MESSAGE_DELAY);
     }
     else
     {
         // Если мы здесь, значит первый город уже выбран, а так же есть выбранный ДРУГОЙ город, его берем за второй город. Вызываем диалог для получения длины дороги и направления.
         AddRoadDialog dialog(this);
         dialog.exec();
+        if (dialog.cancel)
+            return;
 
         if (dialog.length == 0)
-            return; // TODO: message
+            return ui->statusbar->showMessage("Нельзя добавить дорогу длинной 0!", STATUS_MESSAGE_DELAY);
 
         {
             // Изоляция чтоб код повторить
@@ -66,7 +71,7 @@ void MainWindow::_addRoad(CityModel *city)
                 if (*new_road == *i)
                 {
                     delete new_road;
-                    ui->statusbar->showMessage("Эту дорогу уже проложили, перекладывать - дорого.");
+                    ui->statusbar->showMessage("Эту дорогу уже проложили, перекладывать - дорого.", STATUS_MESSAGE_DELAY);
                     scene->QGraphicsScene::update();
                     return;
                 }
@@ -81,7 +86,7 @@ void MainWindow::_addRoad(CityModel *city)
                 if (*new_road == *i)
                 {
                     delete new_road;
-                    ui->statusbar->showMessage("Эту дорогу уже проложили, перекладывать - дорого.");
+                    ui->statusbar->showMessage("Эту дорогу уже проложили, перекладывать - дорого.", STATUS_MESSAGE_DELAY);
                     scene->QGraphicsScene::update();
                     return;
                 }
@@ -89,9 +94,7 @@ void MainWindow::_addRoad(CityModel *city)
             scene->addItem(new_road);
         }
 
-        ui->statusbar->clearMessage();
         add_road_first_city = nullptr;
-
         scene->choosing_cities = false;
         scene->update_selected();
     }

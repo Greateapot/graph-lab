@@ -11,11 +11,11 @@ void MainWindow::save()
         tr("Text Files (*.txt)"));
 
     if (fileName.isEmpty())
-        return; // TODO: message
+        return ui->statusbar->showMessage("Имя файла не может быть пустым!", STATUS_MESSAGE_DELAY);
 
     std::fstream file(fileName.toStdString(), std::ios::out | std::ios::binary);
     if (!file)
-        return; // TODO: message
+        return ui->statusbar->showMessage("Не удается открыть файл!", STATUS_MESSAGE_DELAY);
 
     for (auto city : cities)
         file << *city;
@@ -34,20 +34,21 @@ void MainWindow::save()
 
 void MainWindow::load()
 {
-    roads.clear();
-    cities.clear();
-
     QString fileName = QFileDialog::getOpenFileName(
         this,
         tr("Load"), "",
         tr("Text Files (*.txt)"));
 
     if (fileName.isEmpty())
-        return; // TODO: message
+        return ui->statusbar->showMessage("Имя файла не может быть пустым!", STATUS_MESSAGE_DELAY);
 
     std::fstream file(fileName.toStdString(), std::ios::in | std::ios::binary);
     if (!file)
-        return; // TODO: message
+        return ui->statusbar->showMessage("Не удается открыть файл!", STATUS_MESSAGE_DELAY);
+
+    roads.clear();
+    cities.clear();
+    scene->clear();
 
     while (file.peek() != GDLTR)
     {

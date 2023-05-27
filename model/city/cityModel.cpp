@@ -77,7 +77,6 @@ std::fstream &operator>>(std::fstream &fin, CityModel &city)
     std::getline(fin, y_raw, DLTR);
     std::getline(fin, radius_raw, DLTR);
 
-    // TODO: asserts
     city.name = QString::fromStdString(name_raw);
     city.moveBy(stod(x_raw), stod(y_raw));
     city.radius = stod(radius_raw);
