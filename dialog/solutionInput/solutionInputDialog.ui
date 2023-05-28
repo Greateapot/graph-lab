@@ -71,11 +71,11 @@
      <string>Алгоритм Дейкстры</string>
     </property>
    </item>
-   <item>
+   <!-- <item>
     <property name="text">
      <string>Задача коммивояжёра</string>
     </property>
-   </item>
+   </item> -->
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">

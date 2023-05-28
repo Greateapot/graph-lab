@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "C:/Qt/Qt5.12.12/5.12.12/mingw73_64/include/**",
-                "${workspaceFolder}/build/TSP_autogen/include/**"
+                "${workspaceFolder}/build/Graph_autogen/include/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -17,7 +17,8 @@
             "cppStandard": "c++11",
             "compileCommands": "${workspaceFolder}/build/compile_commands.json",
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4

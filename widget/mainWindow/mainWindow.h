@@ -40,11 +40,6 @@ private slots:
     void save();
     void load();
 
-    void build_matrix(std::vector<std::vector<double>> &);
-    void reduce_matrix(std::vector<std::vector<double>> &);
-
-    void step(std::vector<std::pair<int, int>> &, std::vector<std::vector<double>> &);
-
     void showSolution();
 
     void solve_width(size_t);
@@ -54,8 +49,6 @@ private slots:
 
     void solve_DXTR(size_t);
     void _solve_DXTR(CityModel *);
-
-    void solve_TSP(size_t);
 
 protected:
     void keyPressEvent(QKeyEvent *);

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(TSP VERSION 0.1 LANGUAGES CXX)
+project(Graph VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_PREFIX_PATH "C:\\Qt\\Qt5.12.12\\5.12.12\\mingw73_64\\lib\\cmake")
 
@@ -51,6 +51,6 @@ set(PROJECT_FORMS
     widget/mainWindow/mainWindow.ui
 )
 
-add_executable(TSP WIN32 ${PROJECT_FORMS} ${PROJECT_HEADERS} ${PROJECT_SOURCES})
+add_executable(Graph WIN32 ${PROJECT_FORMS} ${PROJECT_HEADERS} ${PROJECT_SOURCES})
 
-target_link_libraries(TSP Qt5::Widgets -static-libstdc++)
+target_link_libraries(Graph Qt5::Widgets -static-libstdc++)
